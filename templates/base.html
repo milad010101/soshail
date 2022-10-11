@@ -20,6 +20,8 @@
 
   <body>
     {% include 'inc/navbar.html' %}
-    <div class="jumbotron">{% block content %} {% endblock %}</div>
+    <div class="jumbotron">
+      {% include 'inc/message.html' %} {% block content %} {% endblock %}
+    </div>
   </body>
 </html>
