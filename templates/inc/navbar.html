@@ -8,6 +8,13 @@
       <a class="nav-link active" style="color: red" href="{% url 'logout' %}"
         >Logout</a
       >
+      <a
+        class="nav-link active"
+        style="color: red"
+        href="{% url 'profile' request.user.id %}"
+        >Profile</a
+      >
+
       {% else %}
       <a class="nav-link active" style="color: red" href="{% url 'register' %}"
         >Register</a

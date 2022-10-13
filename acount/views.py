@@ -4,6 +4,7 @@ from .form import RegisterForm, UserLoginForm
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 class Register(View):
@@ -54,10 +55,16 @@ class UserLoginViwe(View):
         return render(request, 'acount/login.html', {'form': form})
 
 
-class UserLogoutViwe(View):
+class UserLogoutViwe(LoginRequiredMixin, View):
 
     def get(self, request):
         logout(request)
         messages.success(request, 'yuor logout account success ', 'success')
 
-        return redirect('home')
+        return redirect('login')
+
+
+class ProfileViwe(LoginRequiredMixin, View):
+    def get(self, request, user_id):
+        user = User.objects.get(id=user_id)
+        return render(request, 'acount/profile.html', {'user': user})
