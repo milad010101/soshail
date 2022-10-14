@@ -1,1 +1,9 @@
-{% extends 'base.html' %} {% block content %}index html....{% endblock %}
+{% extends 'base.html' %} {% block content %} index html <br /><br />
+<div class="body">
+  {% for posts in post %}
+  <a href="{% url 'detail' posts.id posts.slug %}" class="card-body"
+    >{{posts.body | truncatewords:8}}<br
+  /></a>
+  {% endfor %}
+</div>
+{% endblock %}

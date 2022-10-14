@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
+from home.models import Post
 
 
 class Register(View):
@@ -67,4 +68,5 @@ class UserLogoutViwe(LoginRequiredMixin, View):
 class ProfileViwe(LoginRequiredMixin, View):
     def get(self, request, user_id):
         user = User.objects.get(id=user_id)
-        return render(request, 'acount/profile.html', {'user': user})
+        post = Post.objects.filter(user=user)
+        return render(request, 'acount/profile.html', {'user': user, 'post': post})
