@@ -69,4 +69,4 @@ class ProfileViwe(LoginRequiredMixin, View):
     def get(self, request, user_id):
         user = User.objects.get(id=user_id)
         post = Post.objects.filter(user=user)
-        return render(request, 'acount/profile.html', {'user': user, 'post': post})
+        return render(request, 'acount/profile.html', {'user': user, 'post': post, 'request': request})

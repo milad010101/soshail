@@ -2,6 +2,7 @@
 <h2 class="text-center">{{user.username}}</h2>
 
 <div class="body">
+  <a href="{% url 'create' %}" class="btn btn-info">Create</a>
   {% for posts in post %}
   <a href="{% url 'detail' posts.id posts.slug %}" class="card-body"
     >{{posts.body | truncatewords:8}}<br

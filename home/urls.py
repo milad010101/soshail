@@ -9,5 +9,7 @@ urlpatterns = [
          views.DeletePostViwe.as_view(), name='delete'),
     path('post/update/<int:id_post>/',
          views.UpdatePostViwe.as_view(), name='update'),
+    path('post/create/',
+         views.CreatePostViwe.as_view(), name='create'),
 
 ]
