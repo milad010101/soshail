@@ -76,6 +76,7 @@ class CreatePostViwe(LoginRequiredMixin, View):
         if form.is_valid():
             new_post = form.save(commit=False)
             new_post.slug = slugify(form.cleaned_data['body'][:30])
+            new_post.user = request.user
             new_post.save()
             messages.success(
                 request, 'you create post success', 'success')

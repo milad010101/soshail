@@ -7,7 +7,7 @@ class Post(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     body = models.TextField()
     slug = models.SlugField()
-    createf = models.DateTimeField()
+    create = models.DateTimeField()
     updted = models.DateTimeField()
 
     def __str__(self):
