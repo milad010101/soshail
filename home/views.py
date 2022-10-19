@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 from .models import Post
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -16,7 +16,7 @@ class Home(View):
 
 class DetailPoatView(View):
     def get(self, request, id_post, slug_post):
-        post = Post.objects.get(id=id_post, slug=slug_post)
+        post = get_object_or_404(Post, id=id_post, slug=slug_post)
         return render(request, 'home/detail.html', {'post': post})
 
 

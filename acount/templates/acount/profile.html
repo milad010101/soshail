@@ -3,7 +3,13 @@
 
 <div class="body">
   <a href="{% url 'create' %}" class="btn btn-info">Create</a>
-  {% for posts in post %}
+
+  {% if request.user.id != user.id and not this_follow %}
+  <a href="{% url 'follower' user.id %}">follow</a>
+  {% elif request.user.id != user.id and this_follow %}
+  <a href="{% url 'unfollow' user.id %}">unfollow</a>
+
+  {% endif %} {% for posts in post %}
   <a href="{% url 'detail' posts.id posts.slug %}" class="card-body"
     >{{posts.body | truncatewords:8}}<br
   /></a>

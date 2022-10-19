@@ -1,0 +1,11 @@
+{% extends 'base.html' %} {% block content %}
+<h2>form emailconfirm</h2>
+
+{% if validlink %}
+<form action="" method="post" class="col-md-6" novalidate>
+  {% csrf_token %} {{form.as_p}}
+  <input type="submit" value="send" />
+</form>
+{% else %}
+<p>link motabar nist</p>
+{% endif %} {% endblock content %}
