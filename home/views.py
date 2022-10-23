@@ -1,10 +1,13 @@
+from distutils.core import setup
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
-from .models import Post
+from .models import Post, Coments
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
-from .form import UpdateCratePostForm
+from .form import UpdateCratePostForm, CommentForm
 from django.utils.text import slugify
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 
 
 class Home(View):
@@ -15,9 +18,28 @@ class Home(View):
 
 
 class DetailPoatView(View):
-    def get(self, request, id_post, slug_post):
-        post = get_object_or_404(Post, id=id_post, slug=slug_post)
-        return render(request, 'home/detail.html', {'post': post})
+    class_form = CommentForm
+
+    def setup(self, request, *args, **kwargs):
+        self.post_inctance = get_object_or_404(
+            Post, id=kwargs['id_post'], slug=kwargs['slug_post'])
+
+        return super().setup(request, *args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
+        comments = self.post_inctance.post_comment.filter(is_reply=False)
+        return render(request, 'home/detail.html', {'post': self.post_inctance, 'comments': comments, 'class_form': self.class_form})
+
+    @method_decorator(login_required)
+    def post(self, request, *args, **kwargs):
+        form = self.class_form(request.POST)
+        if form.is_valid():
+            new_form = form.save(commit=False)
+            new_form.user = request.user
+            new_form.post = self.post_inctance
+            new_form.save()
+            messages.success(request, 'you message post success', 'success')
+        return redirect('detail', self.post_inctance.id, self.post_inctance.slug)
 
 
 class DeletePostViwe(LoginRequiredMixin, View):

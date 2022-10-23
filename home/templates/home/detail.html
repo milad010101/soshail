@@ -5,10 +5,28 @@
   <a href="{% url 'update' post.id %}" class="btn btn-info">Upaete</a>
 
   {% endif %}
+  <p>{{comments.count}}</p>
+  {% for comment in comments %}
+  <div class="card">
+    <p>{{comment.body}}</p>
+  </div>
+  {% empty %}
+  <p>no commenet</p>
+  {% endfor %}
+
   <h4>
     <a href="{% url 'profile' post.id %}">{{post.user}}</a>--{{post.updted |
     date:"Y-M"}}
   </h4>
   <p>{{post.body}}</p>
 </div>
-{% endblock %}
+<hr />
+
+{% if request.user.is_authenticated %};
+<form action="" method="post" class="form-control-color">
+  {% csrf_token %} {{class_form.as_p}}
+  <input type="submit" value="send" />
+</form>
+{% else %}
+<p>لطفا وارد شوید</p>
+{% endif %} {% endblock %}
