@@ -1,4 +1,10 @@
-{% extends 'base.html' %} {% block content %} index html <br /><br />
+{% extends 'base.html' %} {% block content %}
+<form action="" method="get">
+  {{class_form.as_p}}
+  <input type="submit" value="serch" />
+</form>
+
+<br /><br />
 <div class="body">
   {% for posts in post %}
   <a href="{% url 'detail' posts.id posts.slug %}" class="card-body"

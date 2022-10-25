@@ -23,6 +23,9 @@ class Post(models.Model):
     def get_absolute_url(self):
         return reverse('detail', args=(self.id, self.slug))
 
+    def Count_Lile(self):
+        return self.plike.count()
+
 
 class Coments(models.Model):
     user = models.ForeignKey(
@@ -37,3 +40,13 @@ class Coments(models.Model):
 
     def __str__(self):
         return f'{self.user}-{self.body[:30]}'
+
+
+class Like(models.Model):
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='ulike')
+    post = models.ForeignKey(
+        Post, on_delete=models.CASCADE, related_name='plike')
+
+    def __str__(self):
+        return f'{self.user}like to {self.post}'

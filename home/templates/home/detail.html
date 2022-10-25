@@ -10,6 +10,7 @@
   <div class="card">
     <p>{{comment.body}}</p>
   </div>
+  <br />
   {% empty %}
   <p>no commenet</p>
   {% endfor %}
@@ -23,6 +24,9 @@
 <hr />
 
 {% if request.user.is_authenticated %};
+<a href="{% url 'like' post.id %}" class="btn btn-primary"
+  >like{{post.Count_Lile}}</a
+>
 <form action="" method="post" class="form-control-color">
   {% csrf_token %} {{class_form.as_p}}
   <input type="submit" value="send" />

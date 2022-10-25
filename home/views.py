@@ -1,20 +1,25 @@
 from distutils.core import setup
+from pickle import FALSE
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
-from .models import Post, Coments
+from .models import Post, Coments, Like
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
-from .form import UpdateCratePostForm, CommentForm
+from .form import UpdateCratePostForm, CommentForm, SerchForm
 from django.utils.text import slugify
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 
 
 class Home(View):
+    class_form = SerchForm
+
     def get(self, request):
         post = Post.objects.all()
+        if request.GET.get('serch'):
+            post = post.filter(body__contains=request.GET['serch'])
 
-        return render(request, 'home/index.html', {'post': post})
+        return render(request, 'home/index.html', {'post': post, 'class_form': self.class_form})
 
 
 class DetailPoatView(View):
@@ -28,7 +33,7 @@ class DetailPoatView(View):
 
     def get(self, request, *args, **kwargs):
         comments = self.post_inctance.post_comment.filter(is_reply=False)
-        return render(request, 'home/detail.html', {'post': self.post_inctance, 'comments': comments, 'class_form': self.class_form})
+        return render(request, 'home/detail.html', {'post': self.post_inctance, 'comments': comments, 'class_form': self.class_form, })
 
     @method_decorator(login_required)
     def post(self, request, *args, **kwargs):
@@ -103,3 +108,15 @@ class CreatePostViwe(LoginRequiredMixin, View):
             messages.success(
                 request, 'you create post success', 'success')
             return redirect('detail', new_post.id, new_post.slug)
+
+
+class LikeView(LoginRequiredMixin, View):
+    def get(self, request, id_post):
+        postt = Post.objects.get(id=id_post)
+        like = Like.objects.filter(user=request.user, post=postt)
+        if like.exists():
+            messages.warning(request, 'قبلا لایک کردی', 'warning')
+        else:
+            Like.objects.create(user=request.user, post=postt)
+            messages.success(request, 'لایک شد', 'success')
+        return redirect('detail', postt.id, postt.slug)

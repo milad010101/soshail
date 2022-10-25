@@ -1,7 +1,7 @@
 from atexit import register
 from pdb import post_mortem
 from django.contrib import admin
-from .models import Post, Coments
+from .models import Post, Coments, Like
 from home import models
 
 
@@ -15,3 +15,6 @@ class PostAdmin(admin.ModelAdmin):
 @admin.register(Coments)
 class ComentsAdmin(admin.ModelAdmin):
     pass
+
+
+admin.site.register(Like)

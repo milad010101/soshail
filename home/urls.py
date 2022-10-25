@@ -11,5 +11,8 @@ urlpatterns = [
          views.UpdatePostViwe.as_view(), name='update'),
     path('post/create/',
          views.CreatePostViwe.as_view(), name='create'),
+    path('post/<int:id_post>/',
+         views.LikeView.as_view(), name='like'),
+
 
 ]
