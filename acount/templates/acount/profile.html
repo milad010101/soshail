@@ -3,6 +3,7 @@
 
 <div class="body">
   <a href="{% url 'create' %}" class="btn btn-info">Create</a>
+  <a href="{% url 'editprofile' %}" class="btn btn-light">Edit profile</a>
 
   {% if request.user.id != user.id and not this_follow %}
   <a href="{% url 'follower' user.id %}">follow</a>

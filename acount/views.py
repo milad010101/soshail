@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_list_or_404
 from django.views import View
-from .form import RegisterForm, UserLoginForm
+from .form import RegisterForm, UserLoginForm, EditProfileForm
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth import login, authenticate, logout
@@ -132,3 +132,20 @@ class UnFollowView(LoginRequiredMixin, View):
         else:
             messages.error(request, 'شما اصلا فالو نکردید', 'error')
         return redirect('profile', user.id)
+
+
+class EditProfileView(LoginRequiredMixin, View):
+    class_form = EditProfileForm
+
+    def get(self, request):
+        form = self.class_form(instance=request.user.profile, initial={
+                               'email': request.user.email})
+        return render(request, 'acount/editprofiel.html', {'form': form})
+
+    def post(self, request):
+        form = self.class_form(request.POST, instance=request.user.profile)
+        if form.is_valid():
+            form.save()
+            request.user.email = form.cleaned_data['email']
+            messages.success(request, 'شما آپدیت کردید', 'success')
+        return redirect('profile', request.user.id)
